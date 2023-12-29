@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Devon4Net.Application.WebAPI.Business.EmployeeManagement.Service;
 using Devon4Net.Infrastructure.Common;
+using Devon4Net.Infrastructure.Cache.Repository;
 using Devon4Net.Application.WebAPI.Business.EmployeeManagement.Dto;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -17,14 +18,17 @@ namespace Devon4Net.Application.WebAPI.Business.EmployeeManagement.Controllers
     public class EmployeeController: ControllerBase
     {
         private readonly IEmployeeService _employeeService;
+        private readonly ICacheRepository _cache;
+        private const string _cacheKey = "Employee";
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="employeeService"></param>
-        public EmployeeController( IEmployeeService employeeService)
+        public EmployeeController(IEmployeeService employeeService, ICacheRepository cache)
         {
             _employeeService = employeeService;
+            _cache = cache;
         }
 
         /// <summary>
@@ -32,14 +36,23 @@ namespace Devon4Net.Application.WebAPI.Business.EmployeeManagement.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(List<EmployeeDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> GetEmployee()
+        public async Task<ActionResult<List<EmployeeDto>>> GetEmployee()
         {
             Devon4NetLogger.Debug("Executing GetEmployee from controller EmployeeController");
-            return Ok(await _employeeService.GetEmployee().ConfigureAwait(false));
+
+            var cacheData = await _cache.GetData<List<EmployeeDto>>(_cacheKey).ConfigureAwait(false);
+            if (cacheData != null)
+            {
+                return Ok(cacheData);
+            }
+
+            var employees = await _employeeService.GetEmployee().ConfigureAwait(false);
+            await _cache.SetData(_cacheKey, employees);
+
+            return Ok(employees);
         }
 
         /// <summary>
@@ -55,6 +68,9 @@ namespace Devon4Net.Application.WebAPI.Business.EmployeeManagement.Controllers
         {
             Devon4NetLogger.Debug("Executing GetEmployee from controller EmployeeController");
             var result = await _employeeService.CreateEmployee(employeeDto.Name, employeeDto.Surname, employeeDto.Mail).ConfigureAwait(false);
+
+            await _cache.RemoveData(_cacheKey);
+
             return StatusCode(StatusCodes.Status201Created, result);
         }
 
@@ -70,6 +86,9 @@ namespace Devon4Net.Application.WebAPI.Business.EmployeeManagement.Controllers
         public async Task<ActionResult> Delete([Required]long employeeId)
         {
             Devon4NetLogger.Debug("Executing GetEmployee from controller EmployeeController");
+
+            await _cache.RemoveData(_cacheKey);
+
             return Ok(await _employeeService.DeleteEmployeeById(employeeId).ConfigureAwait(false));
         }
 
@@ -90,6 +109,9 @@ namespace Devon4Net.Application.WebAPI.Business.EmployeeManagement.Controllers
             {
                 return BadRequest("The id of the employee must be provided");
             }
+
+            await _cache.RemoveData(_cacheKey);
+
             return Ok(await _employeeService.ModifyEmployeeById(employeeDto.Id, employeeDto.Name, employeeDto.Surname, employeeDto.Mail).ConfigureAwait(false));
         }
     }

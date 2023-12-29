@@ -5,6 +5,7 @@ namespace Devon4Net.Infrastructure.Common.Constants
         public const string DefaultSettingsNodeName = "devonfw";
         public const string LoggingOptions = "Logging";
         public const string LiteDb = "LiteDb";
+        public const string Cache = "Cache";
         public const string Swagger = "Swagger";
         public const string Jwt = "JWT";
         public const string Cors = "Cors";

@@ -10,6 +10,7 @@ using Devon4Net.Infrastructure.Common.Application.Middleware;
 using Devon4Net.Infrastructure.JWT;
 using Devon4Net.Infrastructure.UnitOfWork;
 using Devon4Net.Infrastructure.LiteDb;
+using Devon4Net.Infrastructure.Cache;
 using Devon4Net.Infrastructure.RabbitMQ;
 using Devon4Net.Infrastructure.MediatR;
 
@@ -28,6 +29,7 @@ builder.Services.SetupCors(builder.Configuration);
 builder.Services.SetupJwt(builder.Configuration);
 builder.Services.SetupUnitOfWork(typeof(Program));
 builder.Services.SetupLiteDb(builder.Configuration);
+builder.Services.SetupRedisCache(builder.Configuration);
 builder.Services.SetupRabbitMq(builder.Configuration);
 builder.Services.SetupMediatR(builder.Configuration);
 builder.Services.SetupKafka(builder.Configuration);

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Modules\Devon4Net.Infrastructure.Cache\Devon4Net.Infrastructure.Cache.csproj" />
     <ProjectReference Include="..\..\..\Modules\Devon4Net.Infrastructure.CircuitBreaker\Devon4Net.Infrastructure.CircuitBreaker.csproj" />
     <ProjectReference Include="..\..\..\Modules\Devon4Net.Infrastructure.Common\Devon4Net.Infrastructure.Common.csproj" />
     <ProjectReference Include="..\..\..\Modules\Devon4Net.Infrastructure.Cors\Devon4Net.Infrastructure.Cors.csproj" />

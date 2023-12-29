@@ -34,7 +34,8 @@ namespace Devon4Net.Application.WebAPI.Business.EmployeeManagement.Service
         /// <returns></returns>
         public async Task<IEnumerable<EmployeeDto>> GetEmployee(Expression<Func<Employee, bool>> predicate = null)
         {
-            Devon4NetLogger.Debug("GetEmployee method from service Employeeervice");
+            Devon4NetLogger.Debug("GetEmployee method from service EmployeeService");
+
             var result = await _employeeRepository.GetEmployee(predicate).ConfigureAwait(false);
             return result.Select(EmployeeConverter.ModelToDto);
         }
@@ -46,7 +47,7 @@ namespace Devon4Net.Application.WebAPI.Business.EmployeeManagement.Service
         /// <returns></returns>
         public Task<Employee> GetEmployeeById(long id)
         {
-            Devon4NetLogger.Debug($"GetEmployeeById method from service Employeeervice with value : {id}");
+            Devon4NetLogger.Debug($"GetEmployeeById method from service EmployeService with value : {id}");
             return _employeeRepository.GetEmployeeById(id);
         }
 
