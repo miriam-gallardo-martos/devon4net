@@ -4,6 +4,7 @@ using Devon4Net.Application.WebAPI.Business.TodoManagement.Service;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace Devon4Net.Application.WebAPI.Business.TodoManagement.Controllers
 {
@@ -35,6 +36,7 @@ namespace Devon4Net.Application.WebAPI.Business.TodoManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [OutputCache]
         public async Task<ActionResult> GetTodo()
         {
             Devon4NetLogger.Debug("Executing GetTodo from controller TodoController");

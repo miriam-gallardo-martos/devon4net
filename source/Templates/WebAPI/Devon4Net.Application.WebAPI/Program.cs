@@ -29,7 +29,7 @@ builder.Services.SetupCors(builder.Configuration);
 builder.Services.SetupJwt(builder.Configuration);
 builder.Services.SetupUnitOfWork(typeof(Program));
 builder.Services.SetupLiteDb(builder.Configuration);
-builder.Services.SetupRedisCache(builder.Configuration);
+builder.Services.SetupCache(builder.Configuration);
 builder.Services.SetupRabbitMq(builder.Configuration);
 builder.Services.SetupMediatR(builder.Configuration);
 builder.Services.SetupKafka(builder.Configuration);
@@ -42,6 +42,7 @@ var app = builder.Build();
 
 #region devon app
 app.SetupCors();
+app.SetupCache();
 app.SetupMiddleware(builder.Services);
 app.ConfigureSwaggerEndPoint();
 

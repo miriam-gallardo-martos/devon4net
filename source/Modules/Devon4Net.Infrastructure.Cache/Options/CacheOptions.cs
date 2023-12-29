@@ -2,8 +2,10 @@
 {
     public class CacheOptions
     {
-        public bool EnableDistributedCache { get; set; }
-        public int ExpirationInSecondsRelativeToNow { get; set; }
+        public bool EnableRedisCache { get; set; }
+        public bool EnableOutputCache { get; set; }
+        public int ExpirationInSeconds { get; set; }
         public int SlidingExpirationInSeconds { get; set; }
+        public string? RedisInstanceName { get; set; }        
     }
 }

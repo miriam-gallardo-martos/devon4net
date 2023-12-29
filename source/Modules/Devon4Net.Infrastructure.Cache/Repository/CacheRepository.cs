@@ -16,7 +16,7 @@ namespace Devon4Net.Infrastructure.Cache.Repository
 
             options = new DistributedCacheEntryOptions()
             {
-                AbsoluteExpirationRelativeToNow = cacheOptions.Value.ExpirationInSecondsRelativeToNow > 0 ? TimeSpan.FromSeconds(cacheOptions.Value.ExpirationInSecondsRelativeToNow) : null,
+                AbsoluteExpirationRelativeToNow = cacheOptions.Value.ExpirationInSeconds > 0 ? TimeSpan.FromSeconds(cacheOptions.Value.ExpirationInSeconds) : null,
                 SlidingExpiration = cacheOptions.Value.SlidingExpirationInSeconds > 0 ? TimeSpan.FromSeconds(cacheOptions.Value.SlidingExpirationInSeconds) : null
             };
         }
